@@ -6,4 +6,5 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(clox_compiler
         main.cpp
         debug.cpp
-        chunk.cpp)
+        chunk.cpp
+        vm.cpp)
