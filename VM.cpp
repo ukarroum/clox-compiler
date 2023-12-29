@@ -5,15 +5,14 @@
 #include <iostream>
 #include <functional>
 
-#include "vm.h"
+#include "VM.h"
 #include "debug.h"
+#include "compiler.h"
 
-InterpretResult VM::interpret(Chunk *chunk)
+InterpretResult VM::interpret(const std::string& code)
 {
-    m_chunk = chunk;
-    m_ip = m_chunk->getCode().cbegin();
-
-    return run();
+    compile(code);
+    return InterpretResult::INTERPRET_OK;
 }
 
 InterpretResult VM::run()

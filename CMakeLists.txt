@@ -7,4 +7,5 @@ add_executable(clox_compiler
         main.cpp
         debug.cpp
         chunk.cpp
-        vm.cpp)
+        VM.cpp
+        Scanner.cpp)

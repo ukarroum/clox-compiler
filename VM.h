@@ -19,7 +19,7 @@ enum class InterpretResult {
 class VM
 {
 public:
-    InterpretResult interpret(Chunk* chunk);
+    InterpretResult interpret(const std::string& code);
     InterpretResult run();
 private:
     uint8_t readByte() { return *m_ip++; }
