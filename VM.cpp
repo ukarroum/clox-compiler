@@ -52,11 +52,40 @@ InterpretResult VM::run()
                 m_stack.push(constant);
                 break;
             }
+            case OpCode::OP_NIL:
+                m_stack.emplace(0);
+                break;
+            case OpCode::OP_TRUE:
+                m_stack.emplace(true);
+                break;
+            case OpCode::OP_FALSE:
+                m_stack.emplace(false);
+                break;
+            case OpCode::OP_EQUAL:
+            {
+                Value b = m_stack.top();
+                m_stack.pop();
+                Value a = m_stack.top();
+                m_stack.pop();
+
+                m_stack.emplace(a == b);
+            }
+            case OpCode::OP_GREATER:
+                binaryOp(std::greater<>());
+                break;
+            case OpCode::OP_LESS:
+                binaryOp(std::less<>());
+                break;
             case OpCode::OP_NEGATE:
             {
                 auto top = m_stack.top();
                 m_stack.pop();
-                m_stack.push(-top);
+                if(!std::holds_alternative<double>(top))
+                {
+                    runtimeError("Operand must be a number");
+                    return InterpretResult::INTERPRET_RUNTIME_ERROR;
+                }
+                m_stack.emplace(-std::get<double>(top));
                 break;
             }
             case OpCode::OP_ADD:
@@ -71,8 +100,24 @@ InterpretResult VM::run()
             case OpCode::OP_DIVIDE:
                 binaryOp(std::divides<>());
                 break;
+            case OpCode::OP_NOT:
+                auto top = m_stack.top();
+                m_stack.pop();
+
+                if(std::holds_alternative<bool>(top))
+                    m_stack.emplace(!std::get<bool>(top));
+                else if(std::holds_alternative<nullptr_t>(top))
+                    m_stack.emplace(true);
+                else
+                    m_stack.emplace(false);
+                break;
         }
     }
+}
+
+void VM::runtimeError(const std::string &msg)
+{
+    std::cerr << msg << std::endl;
 }
 
 template <typename BinaryOp> void VM::binaryOp(BinaryOp op) {
@@ -81,5 +126,12 @@ template <typename BinaryOp> void VM::binaryOp(BinaryOp op) {
     Value a = m_stack.top();
     m_stack.pop();
 
-    m_stack.push(op(a, b));
+    if(!std::holds_alternative<double>(a) || !std::holds_alternative<double>(b))
+    {
+        runtimeError("Operands must be numbers");
+        exit(1);
+        //return InterpretResult::INTERPRET_RUNTIME_ERROR;
+    }
+
+    m_stack.push(op(std::get<double>(a), std::get<double>(b)));
 }

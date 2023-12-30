@@ -5,6 +5,10 @@
 #ifndef CLOX_COMPILER_VALUE_H
 #define CLOX_COMPILER_VALUE_H
 
-using Value = double;
+#include <variant>
+
+using Value = std::variant<bool, double, nullptr_t>;
+
+void printValue(Value value);
 
 #endif //CLOX_COMPILER_VALUE_H

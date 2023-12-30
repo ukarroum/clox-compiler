@@ -138,6 +138,9 @@ void Compiler::unary()
 
     switch(op)
     {
+        case TokenType::BANG:
+            emitByte(OpCode::OP_NOT);
+            break;
         case TokenType::MINUS:
             emitByte(OpCode::OP_NEGATE);
             break;
@@ -175,6 +178,24 @@ void Compiler::binary()
 
     switch(op)
     {
+        case TokenType::BANG_EQUAL:
+            emitBytes(OP_EQUAL, OP_NOT);
+            break;
+        case TokenType::EQUAL_EQUAL:
+            emitByte(OP_EQUAL);
+            break;
+        case TokenType::GREATER:
+            emitByte(OP_GREATER);
+            break;
+        case TokenType::GREATER_EQUAL:
+            emitBytes(OP_LESS, OP_NOT);
+            break;
+        case TokenType::LESS:
+            emitByte(OP_LESS);
+            break;
+        case TokenType::LESS_EQUAL:
+            emitBytes(OP_GREATER, OP_NOT);
+            break;
         case TokenType::PLUS:
             emitByte(OP_ADD);
             break;
@@ -195,5 +216,23 @@ void Compiler::binary()
 ParseRule Compiler::getRule(TokenType type)
 {
     return m_rules.at(type);
+}
+
+void Compiler::literal()
+{
+    switch(m_parser.previous.type)
+    {
+        case TokenType::FALSE:
+            emitByte(OpCode::OP_FALSE);
+            break;
+        case TokenType::TRUE:
+            emitByte(OpCode::OP_TRUE);
+            break;
+        case TokenType::NIL:
+            emitByte(OpCode::OP_NIL);
+            break;
+        default:
+            return;
+    }
 }
 

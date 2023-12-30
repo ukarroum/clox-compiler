@@ -15,12 +15,19 @@
 enum OpCode : uint8_t
 {
     OP_CONSTANT,
+    OP_NIL,
+    OP_TRUE,
+    OP_FALSE,
+    OP_EQUAL,
+    OP_GREATER,
+    OP_LESS,
     OP_RETURN,
     OP_NEGATE,
     OP_ADD,
     OP_SUBSTRACT,
     OP_MULTIPLY,
-    OP_DIVIDE
+    OP_DIVIDE,
+    OP_NOT
 };
 
 class Chunk

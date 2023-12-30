@@ -68,5 +68,5 @@ int constantInstr(const std::string& name, const Chunk& chunk, int offset)
 
 void printValue(Value value)
 {
-    std::cout << value;
+    std::cout << std::get<double>(value);
 }
