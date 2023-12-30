@@ -34,15 +34,15 @@ struct Token {
     size_t start;
     size_t length;
     size_t line;
+    std::string errorMsg;
 };
 
 class Scanner {
 public:
-    Scanner(const std::string& code): m_code(code) {}
+    explicit Scanner(std::string& code): m_code(code) {}
     Token scanToken();
 private:
     Token makeToken(TokenType type);
-    char advance();
     bool match(char expected);
     void skipWhitespaces();
     char peekNext();
@@ -52,7 +52,7 @@ private:
     TokenType identifierType();
     TokenType checkKeyword(int start, const std::string& rest, TokenType type);
 
-    const std::string& m_code;
+    std::string m_code;
     size_t m_start = 0;
     size_t m_current = 0;
     size_t m_line = 1;

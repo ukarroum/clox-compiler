@@ -43,7 +43,7 @@ Token Scanner::scanToken() {
         case '"': return string();
     }
 
-    return {TokenType::ERROR, 0, 0, 0};
+    return {TokenType::ERROR, 0, 0, 0, "Unexpected character"};
 }
 
 Token Scanner::makeToken(TokenType type) {

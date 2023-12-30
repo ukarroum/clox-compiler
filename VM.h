@@ -23,10 +23,10 @@ public:
     InterpretResult run();
 private:
     uint8_t readByte() { return *m_ip++; }
-    Value readConstant() { return m_chunk->getConstants()[readByte()]; }
+    Value readConstant() { return m_chunk.getConstants()[readByte()]; }
     template <typename BinaryOp> void binaryOp(BinaryOp op);
 
-    Chunk* m_chunk;
+    Chunk m_chunk;
     std::vector<uint8_t>::const_iterator m_ip;
     std::stack<Value> m_stack;
 };

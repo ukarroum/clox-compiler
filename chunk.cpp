@@ -4,7 +4,7 @@
 
 #include "chunk.h"
 
-void Chunk::write(uint8_t byte, int line)
+void Chunk::write(uint8_t byte, size_t line)
 {
     code.push_back(byte);
     lines.push_back(line);

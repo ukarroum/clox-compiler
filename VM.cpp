@@ -11,8 +11,18 @@
 
 InterpretResult VM::interpret(const std::string& code)
 {
-    compile(code);
-    return InterpretResult::INTERPRET_OK;
+    m_chunk = Chunk();
+
+    Compiler compiler;
+
+    if(!compiler.compile(code, chunk))
+        return InterpretResult::INTERPRET_COMPILE_ERROR;
+
+    m_ip = m_chunk.getCode().cbegin();
+
+    InterpretResult result = run();
+
+    return result;
 }
 
 InterpretResult VM::run()
@@ -20,7 +30,7 @@ InterpretResult VM::run()
     while(true)
     {
 #ifdef DEBUG_TRACE_EXECUTION
-        disInstr(*m_chunk, m_ip - m_chunk->getCode().cbegin());
+        disInstr(m_chunk, m_ip - m_chunk.getCode().cbegin());
 #endif
 
         uint8_t instr;
