@@ -10,4 +10,6 @@ void printValue(Value value)
         std::cout << "NIL";
     else if(std::holds_alternative<bool>(value))
         std::cout << std::get<bool>(value);
+    else if(std::holds_alternative<std::string>(value))
+        std::cout << std::get<std::string>(value);
 }

@@ -61,6 +61,7 @@ public:
     void unary();
     void binary();
     void literal();
+    void string();
     uint8_t makeConstant(Value value);
     void parsePrecedence(Precedence precedence);
     ParseRule getRule(TokenType type);
@@ -91,7 +92,7 @@ private:
             {TokenType::LESS, {nullptr, [this] { binary(); }, Precedence::COMPARISON}},
             {TokenType::LESS_EQUAL, {nullptr, [this] { binary(); }, Precedence::COMPARISON}},
             {TokenType::IDENTIFIER, {nullptr, nullptr, Precedence::NONE}},
-            {TokenType::STRING, {nullptr, nullptr, Precedence::NONE}},
+            {TokenType::STRING, {[this] { string(); }, nullptr, Precedence::NONE}},
             {TokenType::NUMBER, {[this] { number(); }, nullptr, Precedence::NONE}},
             {TokenType::AND, {nullptr, nullptr, Precedence::NONE}},
             {TokenType::CLASS, {nullptr, nullptr, Precedence::NONE}},

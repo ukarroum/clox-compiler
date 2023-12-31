@@ -6,8 +6,10 @@
 #define CLOX_COMPILER_VALUE_H
 
 #include <variant>
+#include <any>
 
-using Value = std::variant<bool, double, nullptr_t>;
+// The reason why we're not just using any as Value, is that we want to be as efficient as possible for primitive types like numbers and booleans
+using Value = std::variant<bool, double, nullptr_t, std::string>;
 
 void printValue(Value value);
 

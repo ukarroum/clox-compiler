@@ -120,6 +120,21 @@ void VM::runtimeError(const std::string &msg)
     std::cerr << msg << std::endl;
 }
 
+template<>
+void VM::binaryOp<std::plus<>>(std::plus<> op) {
+    Value b = m_stack.top();
+    m_stack.pop();
+    Value a = m_stack.top();
+    m_stack.pop();
+
+    if(std::holds_alternative<double>(a) && std::holds_alternative<double>(b))
+        m_stack.emplace(std::get<double>(a) + std::get<double>(b));
+    else if(std::holds_alternative<std::string>(a) && std::holds_alternative<std::string>(a))
+        m_stack.emplace(std::get<std::string>(a) + std::get<std::string>(b));
+    else
+        runtimeError("Operands must be numbers");
+}
+
 template <typename BinaryOp> void VM::binaryOp(BinaryOp op) {
     Value b = m_stack.top();
     m_stack.pop();
@@ -135,3 +150,4 @@ template <typename BinaryOp> void VM::binaryOp(BinaryOp op) {
 
     m_stack.push(op(std::get<double>(a), std::get<double>(b)));
 }
+

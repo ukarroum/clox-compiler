@@ -11,3 +11,5 @@ add_executable(clox_compiler
         Scanner.cpp
         compiler.cpp
         value.cpp)
+add_executable(test_compiler
+        tests/lox_tester.cpp)

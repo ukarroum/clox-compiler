@@ -25,6 +25,8 @@ private:
     uint8_t readByte() { return *m_ip++; }
     Value readConstant() { return m_chunk.getConstants()[readByte()]; }
     template <typename BinaryOp> void binaryOp(BinaryOp op);
+    template <> void binaryOp<std::plus<>>(std::plus<> op);
+
     void runtimeError(const std::string& msg);
 
     Chunk m_chunk;

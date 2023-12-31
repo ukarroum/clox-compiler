@@ -236,3 +236,8 @@ void Compiler::literal()
     }
 }
 
+void Compiler::string()
+{
+    emitConstant(m_code.substr(m_parser.previous.start, m_parser.previous.length));
+}
+
