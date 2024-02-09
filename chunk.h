@@ -1,9 +1,4 @@
-//
-// Created by ykarroum on 12/26/23.
-//
-
-#ifndef CLOX_COMPILER_CHUNK_H
-#define CLOX_COMPILER_CHUNK_H
+#pragma once
 
 #include <cstdint>
 #include <vector>
@@ -15,6 +10,7 @@
 enum OpCode : uint8_t
 {
     OP_CONSTANT,
+    OP_CONSTANT_LONG,
     OP_NIL,
     OP_TRUE,
     OP_FALSE,
@@ -34,15 +30,14 @@ class Chunk
 {
 public:
     void write(uint8_t byte, size_t line);
+    void writeConstant(Value constant, int line);
     size_t addConstant(Value constant);
-    const std::vector<uint8_t>& getCode() const { return code; }
-    const std::vector<size_t>& getLines() const { return lines; }
-    const std::vector<Value>& getConstants() const { return constants; }
+    [[nodiscard]] const std::vector<uint8_t>& getCode() const { return code; }
+    [[nodiscard]] uint16_t getLine(int offset) const;
+    [[nodiscard]] const std::vector<Value>& getConstants() const { return constants; }
 
 private:
     std::vector<uint8_t> code;
-    std::vector<size_t> lines;
+    std::vector<std::pair<size_t, int>> lines;
     std::vector<Value> constants;
 };
-
-#endif //CLOX_COMPILER_CHUNK_H

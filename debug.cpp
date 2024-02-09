@@ -1,7 +1,3 @@
-//
-// Created by ykarroum on 12/26/23.
-//
-
 #include <iostream>
 #include <iomanip>
 
@@ -23,7 +19,7 @@ void disChunk(const Chunk& chunk, const std::string& name)
 int disInstr(const Chunk& chunk, int offset)
 {
     std::cout << std::setfill('0') << std::setw(4) << offset << " ";
-    std::cout << chunk.getLines()[offset] << " ";
+    std::cout << chunk.getLine(offset) << " ";
 
     uint8_t instr = chunk.getCode()[offset];
 
@@ -33,6 +29,8 @@ int disInstr(const Chunk& chunk, int offset)
             return simpleInstr("OP_RETURN", offset);
         case OpCode::OP_CONSTANT:
             return constantInstr("OP_CONSTANT", chunk, offset);
+        case OpCode::OP_CONSTANT_LONG:
+            return longConstantInst("OP_CONSTANT_LONG", chunk, offset);
         case OpCode::OP_NEGATE:
             return simpleInstr("OP_NEGATE", offset);
         case OpCode::OP_ADD:
@@ -64,4 +62,19 @@ int constantInstr(const std::string& name, const Chunk& chunk, int offset)
     std::cout << "'" << std::endl;
 
     return offset + 2;
+}
+
+int longConstantInst(const std::string &name, const Chunk &chunk, int offset)
+{
+    size_t constant_idx = 0;
+    constant_idx += chunk.getCode()[offset + 1];
+    constant_idx += chunk.getCode()[offset + 2] << 8;
+    constant_idx += chunk.getCode()[offset + 3] << 16;
+
+    std::cout << name << " " << constant_idx << " '";
+    printValue(chunk.getConstants()[constant_idx]);
+    std::cout << "'" << std::endl;
+
+    return offset + 4;
+
 }
