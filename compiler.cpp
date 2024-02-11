@@ -1,7 +1,3 @@
-//
-// Created by ykarroum on 12/27/23.
-//
-
 #include <iostream>
 
 #include "compiler.h"

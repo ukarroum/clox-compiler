@@ -1,9 +1,4 @@
-//
-// Created by ykarroum on 12/27/23.
-//
-
-#ifndef CLOX_COMPILER_COMPILER_H
-#define CLOX_COMPILER_COMPILER_H
+#pragma once
 
 #include <string>
 #include <functional>
@@ -114,6 +109,3 @@ private:
             {TokenType::TOKEN_EOF, {nullptr, nullptr, Precedence::NONE}},
     };
 };
-
-
-#endif //CLOX_COMPILER_COMPILER_H

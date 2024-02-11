@@ -1,3 +1,6 @@
+#include <stdexcept>
+#include <format>
+
 #include "chunk.h"
 
 void Chunk::write(uint8_t byte, size_t line)
@@ -26,6 +29,8 @@ uint16_t Chunk::getLine(int offset) const {
         if (curr >= offset)
             return e.first;
     }
+
+    throw std::invalid_argument(std::format("Couldn't find line for offset: {}", offset));
 }
 
 void Chunk::writeConstant(Value constant, int line)

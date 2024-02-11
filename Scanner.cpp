@@ -1,7 +1,3 @@
-//
-// Created by ykarroum on 12/27/23.
-//
-
 #include <stdexcept>
 
 #include "Scanner.h"
@@ -41,9 +37,8 @@ Token Scanner::scanToken() {
         case '<': return makeToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
         case '>': return makeToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
         case '"': return string();
+        default: throw std::invalid_argument("Unexpected character");
     }
-
-    return {TokenType::ERROR, 0, 0, 0, "Unexpected character"};
 }
 
 Token Scanner::makeToken(TokenType type) {
@@ -76,7 +71,7 @@ void Scanner::skipWhitespaces() {
                 break;
             case '/':
                 if(peekNext() == '/')
-                    while (m_code[m_current] != '\n' && (!m_current < m_code.size())) advance();
+                    while (m_code[m_current] != '\n' && (m_current < m_code.size())) advance();
                 else
                     return;
                 break;
@@ -157,6 +152,8 @@ TokenType Scanner::identifierType() {
                     case 'r': return checkKeyword(2, "ue", TokenType::TRUE);
                 }
             }
+        default:
+            throw std::invalid_argument("Invalid keyword identifier");
     }
 }
 
